@@ -3,14 +3,10 @@
 #include <string.h>
 #include <ctype.h>
 
-typedef struct {
-    char *section;
-    char *key;
-    char *value;
-} Cfg;
+#include "reader.h"
 
-
-void trim_whitespace(char *str) {
+void trim_whitespace(char *str)
+{
     if (!str || !*str) return;
 
     // Trim trailing spaces
@@ -24,7 +20,8 @@ void trim_whitespace(char *str) {
     if (start != str) memmove(str, start, strlen(start) + 1);
 }
 
-Cfg *parse_config(const char *filename, int *count) {
+Cfg *parse_config(const char *filename, int *count)
+{
     FILE *file = fopen(filename, "r");
     if (!file) return NULL;
 
@@ -85,15 +82,4 @@ Cfg *parse_config(const char *filename, int *count) {
 
     fclose(file);
     return configs;
-}
-
-int main() {
-    int count;
-    Cfg *cfg = parse_config("cfg.ini", &count);
-
-	for (int i = 0; i<count; i++) {
-		printf("%-15s %-20s = %-30s\n", cfg[i].section, cfg[i].key, cfg[i].value);
-	}
-
-	return 0;
 }
